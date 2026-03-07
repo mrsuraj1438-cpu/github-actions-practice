@@ -2,6 +2,8 @@
 
 name: Hello-Second-Work-flow
 
+on: push  
+
 # this job : specific task do
 jobs:
 
