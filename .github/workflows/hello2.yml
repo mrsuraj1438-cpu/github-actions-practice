@@ -2,7 +2,7 @@
 
 name: Hello-Second-Work-flow
 
-on: push  
+on: workflow_dispatch 
 
 # this job : specific task do
 jobs:
