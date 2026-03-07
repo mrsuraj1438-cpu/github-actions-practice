@@ -29,4 +29,17 @@ jobs:
         run: ls
 
       - name: check the version of the ubuntu:os
-        run: cat /etc/os-release    
+        run: cat /etc/os-release
+
+      - name: run the shell script
+        run: bash shell.sh   
+
+      - name: who triggerd the workflow
+        run: |
+         echo "who triggered the workflow ${{ github.actor}}"
+
+      - name: print the repo name
+        run: |
+          echo "print the repo name: ${{ github.repository}}"
+
+
