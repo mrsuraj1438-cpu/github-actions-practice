@@ -1,0 +1,202 @@
+Task 1: Set Up
+Create a new public GitHub repository called github-actions-practice
+ans: 
+step1: after create a repo on the github
+
+Clone it locally
+step1: git clone repo link
+
+step2: add the origin : git remote add origin ssh link
+       
+Create the folder structure: .github/workflows/
+
+step1: mdkdir -p .github/workflows/ 
+
+step2: cmd: touch .github/workflows/filename : this command use where you write github action file according to requrement
+
+step3: cmd: git add file :  add your file in git
+            git commit -m "file add" : commit the file 
+            git push -u origin main  : push to github 
+
+Task 2: Hello Workflow
+Create .github/workflows/hello.yml with a workflow that:
+
+Triggers on every push : done
+Has one job called greet : done 
+Runs on ubuntu-latest : done
+Has two steps:
+ 
+Step 1: Check out the code using actions/checkout done:
+
+Step 2: Print Hello from GitHub Actions!
+Push it. Go to the Actions tab on GitHub and watch it run
+
+here is file : hello.yml
+
+'''
+
+# this tell which type of your work file in git hub action
+
+name: Hello-Second-Work-flow
+
+on: push
+
+# this job : specific task do
+jobs:
+
+  greet: # job-1
+    runs-on: ubuntu-latest # where my job run
+
+    steps: # it steps to the command run on the job
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: say hello to git hub
+        run: echo "Hello git hub this is Suraj"
+'''
+
+Task 3: Understand the Anatomy
+Look at your workflow file and write in your notes what each key does:
+
+on: this is use for start start your pipe line : because when developer push the code to github this key triggers to start the workflow
+
+jobs: A job is a group of steps that perform a task : 
+ example: build-->test-->deploy : this is jobs
+
+runs-on: this key is use to where you run your jobs : basically it is machine where your jobs run the
+ exmaple: runs-on: ubuntu-latest 
+
+steps: this key is use to define which type of steps on run inside the jobs
+ example: single task perform inside the job.
+
+uses: use existing action (pre-built tool) created by someone else or github 
+ examle: uses: actions/checkout@v4 --> 👉 Use the checkout action to download the repository code into the runner.
+
+run: runs a command in the runner terminal.
+ example: run: echo "Hello GitHub Actions" : this can run the ubuntu(runner)
+
+name: (on a step) : description of the step
+ example: : 
+      steps:
+      - name: display the name
+        run: echo "hello this Suraj"
+
+
+matrix: Allows a job to run multiple versions of something. also To test code across different environments.
+ example: 
+  strategy:
+    matrix:
+      python-version: [3.10, 3.11, 3.12]
+
+
+
+Task 4: Add More Steps
+Update hello.yml to also:
+
+Print the current date and time
+Print the name of the branch that triggered the run (hint: GitHub provides this as a variable)
+List the files in the repo
+Print the runner's operating system
+Push again — watch the new run.
+
+
+''
+answer: above task4
+# this tell which type of your work file in git hub action
+
+name: Hello-Second-Work-flow
+
+on: workflow_dispatch
+
+# this job : specific task do
+jobs:
+
+  greet: # job-1
+    runs-on: ubuntu-latest # where my job run
+
+    steps: # it steps to the command run on the job
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: say hello to git hub
+        run: echo "Hello git hub this is Suraj"
+
+      - name: display the date and time
+        run: |
+          echo " display the date and time: $(date)"
+
+      - name: print the branch name
+        run: |
+          echo "Branch name is ${{ github.ref_name }}"
+
+      - name: list files
+        run: ls
+
+      - name: check the version of the ubuntu:os
+        run: cat /etc/os-release
+
+      - name: run the shell script
+        run: bash shell.sh
+
+      - name: who triggerd the workflow
+        run: |
+         echo "who triggered the workflow ${{ github.actor}}"
+
+      - name: print the repo name
+        run: |
+          echo "print the repo name: ${{ github.repository}}"
+            ''
+
+
+Task 5: Break It On Purpose
+Add a step that runs a command that will fail (e.g., exit 1 or a misspelled command)
+Push and observe what happens in the Actions tab
+Fix it and push again
+Write in your notes: What does a failed pipeline look like? How do you read the error?
+        
+        on: workflow_dispatch
+      - name: display the date and time
+        run:  echo " display the date and time: $(date)"
+
+when i missed this steps my pipe line should be stop 
+how can see this 
+
+step1: when you click the git-hub action tab --> this will you show the where your pipe line sucess or fail
+ if: your pipe line fail : ❌ Red cross mark :If all jobs and steps run successfully, you will see: 
+ 
+ else: your pipe line pass: ✅ Green check mark : If any step returns an error, the workflow fails. aslo show which line is failed code
+    
+
+When a step in the workflow is missed or contains an error, the pipeline stops automatically.
+
+To check whether the pipeline passed or failed, follow these steps:
+
+Step 1:
+Click on the Actions tab in GitHub. This page shows all workflow runs.
+
+If the pipeline fails, you will see a ❌ red cross mark next to the workflow name.
+
+If the pipeline passes, you will see a ✅ green check mark, which means all jobs and steps ran successfully.
+
+When the pipeline fails, GitHub also shows which step and line caused the error.
+
+For example, in my workflow I saw this error:
+
+Annotations
+1 error
+Invalid workflow file: .github/workflows/hello2.yml#L21
+You have an error in your yaml syntax on line 21
+
+This means there is a YAML syntax error on line 21 of the file hello2.yml.
+
+To read the error:
+
+Open the failed workflow in the Actions tab.
+
+Click on the workflow run.
+
+Open the failed job or step.
+
+Read the logs and annotations, which show the exact error message and line number.
+
+This helps us understand why the pipeline failed and where we need to fix the code.  
