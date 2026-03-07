@@ -18,10 +18,12 @@ jobs:
         run: echo "Hello git hub this is Suraj"
 
       - name: display the date and time
-        run: echo " display the date and time: $(date)"
+        run: |
+          echo " display the date and time: $(date)"
 
       - name: print the branch name
-        run: echo "Branch name is ${{ github.ref_name }}"
+        run: |
+          echo "Branch name is ${{ github.ref_name }}"
 
       - name: list files
         run: ls
