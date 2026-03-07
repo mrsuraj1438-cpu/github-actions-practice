@@ -1,0 +1,16 @@
+# this tell which type of your work file in git hub action
+
+name: Hello-Second-Work-flow
+
+# this job : specific task do
+job:
+
+  greet: # job-1
+    runs-on: ubuntu-latest # where my job run
+
+    steps: # it steps to the command run on the job
+      - name: checkout code
+        uses: actions/checkout@v4
+      
+      - name: say hello to git hub
+        run: echo "Hello git hub this is Suraj"
