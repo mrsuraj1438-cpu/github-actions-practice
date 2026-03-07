@@ -3,7 +3,7 @@
 name: Hello-Second-Work-flow
 
 # this job : specific task do
-job:
+jobs:
 
   greet: # job-1
     runs-on: ubuntu-latest # where my job run
