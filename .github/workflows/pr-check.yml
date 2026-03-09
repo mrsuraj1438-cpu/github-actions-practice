@@ -25,4 +25,4 @@ jobs:
           echo "hello"
           echo "PR number is ${{ github.event.pull_request.number }}"
           echo "Source branch For PR ${{ github.head_ref }}"
-          echo "Target branch for PR ${{ gitub.base_ref }}"
+          echo "Target branch for PR ${{ github.base_ref }}"
