@@ -20,4 +20,9 @@ jobs:
       - name: PR check for the branch name
         run: |
           echo "PR branch name is ${{ github.ref_name }}"
-
+      - name: PR info 
+        run: |
+          echo "hello"
+          echo "PR number is ${{ github.event.pull_request.number }}"
+          echo "Source branch For PR ${{ github.head_ref }}"
+          echo "Target branch for PR ${{ gitub.base_ref }}"
