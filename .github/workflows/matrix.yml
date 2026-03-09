@@ -1,0 +1,24 @@
+name: Matrix workflow Test
+
+on:
+ push:
+   branches:
+     - main
+
+jobs:
+  test:
+   runs-on: ubuntu-latest
+   strategy:
+     matrix:
+       python-version: [3.10, 3.11, 3.12]
+   steps:
+     - name: check the code
+       uses: actions/checkout@v4
+     - name: setup python 
+       uses: actions/setup-python@v5
+       with:
+         python-version: ${{ matrix.python-version }}
+     - name: python-version
+       run: python --version
+     - name: check Linux-version
+       run: cat /etc/os-release
