@@ -1,6 +1,6 @@
 name: Daily Schedule Workflow
 
-#on: 
+on: workflow_dispatch
   #schedule:
    #  - cron: "*/5 * * * *"   # runs every 5 minutes (UTC)
 
