@@ -18,5 +18,5 @@ jobs:
      - name: show selected environment
        run: echo " Deploying to ${{ github.event.inputs.environments}}"
      - name: display who can push the code
-       run: echo " who can trigger workflow $${ github.actor}}"
+       run: echo " who can trigger workflow ${ github.actor}}"
        
