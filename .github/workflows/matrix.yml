@@ -1,15 +1,16 @@
 name: Matrix workflow Test
 
-#on:
+on:
  push:
    branches:
      - main
 
 jobs:
   test:
-   runs-on: ubuntu-latest
+   runs-on: ${{ matrix.os}}
    strategy:
      matrix:
+       os: [ubuntu-latest, windows-latest]
        python-version: ["3.10", "3.11", "3.12"]
    steps:
      - name: check the code
@@ -22,3 +23,5 @@ jobs:
        run: python --version
      - name: check Linux-version
        run: cat /etc/os-release
+     - name: Print OS
+       run: echo "print OS ${{ matrix.os}}
