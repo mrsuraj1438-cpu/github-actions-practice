@@ -1,0 +1,20 @@
+name: Manual Work
+
+on: 
+ workflow_dispatch:
+  inputs:
+   environments:
+    description: "choose Environment (staging or production"
+    required: true
+    default: "staging"
+jobs:
+  manual_work:
+   runs-on: ubuntu-latest
+   steps:
+     - name: check code quality
+       uses: actions/checkout@v4
+     - name: display who can push the code
+       run: echo " who can push the code ${{ github.action_ref }}"
+     - name: show selected environment
+       run: echo " Deploying to ${{ github.event.inputs.environments}}"
+       
