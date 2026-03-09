@@ -1,0 +1,17 @@
+name: Daily Schedule Workflow
+
+on: 
+  schedule:
+    - cron: "*/5 * * * *"   # runs every 5 minutes (UTC)
+
+jobs:
+  daily-update:
+   runs-on: ubuntu-latest
+   steps:
+     - name: check the code
+       uses: actions/checkout@v4
+     - name: print date
+       run: | 
+        echo "Workflow running"
+        echo "UTC Time: $(date -u)"
+        echo "IST Time: $(date -u --date='+5 hours 30 minutes')"
