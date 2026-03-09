@@ -24,4 +24,4 @@ jobs:
      - name: check Linux-version
        run: cat /etc/os-release
      - name: Print OS
-       run: echo "print OS ${{ matrix.os}}
+       run: echo "print OS ${{ matrix.os}}"
