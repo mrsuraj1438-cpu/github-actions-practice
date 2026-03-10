@@ -1,11 +1,11 @@
 name: Trigger on Pull Request
 
-on:
-  push:
-    branches:
+#on:
+  #push:
+    #branches:
       - main
-  pull_request:
-    branches:
+  #pull_request:
+    #branches:
       - main
   
 
