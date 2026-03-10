@@ -29,10 +29,10 @@ jobs:
    needs: [lint, test] # # Runs only after both build and test finish
    steps:
      - name: code check
-       run: actions/checkout@v4
+       uses: actions/checkout@v4
 
      - name: check which branch push and their commit
        run: |
         echo "the code is push by branch is: ${{ github.ref_name}}"
         echo "the full info who push the code: $(GITHUB_REF)"
-        echo "access the commit id: ${{github.event.head_commit.message)"
+        echo "access the commit id: ${{github.event.head_commit.message}}"
