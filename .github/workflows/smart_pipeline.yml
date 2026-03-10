@@ -34,5 +34,5 @@ jobs:
      - name: check which branch push and their commit
        run: |
         echo "the code is push by branch is: ${{ github.ref_name}}"
-        echo "the full info who push the code: $(GITHUB_REF)"
+        echo "the full info who push the code: $GITHUB_REF"
         echo "access the commit id: ${{github.event.head_commit.message}}"
