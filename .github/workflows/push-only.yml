@@ -1,10 +1,10 @@
 # .github/workflows/push-only.yml
 name: Push Only Workflow
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
+  #push:
+    #branches:
+      #- main
 
 jobs:
   push-only-job:
