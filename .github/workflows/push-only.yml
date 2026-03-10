@@ -1,0 +1,14 @@
+# .github/workflows/push-only.yml
+name: Push Only Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-only-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "This job runs only on push events, not on pull requests"
