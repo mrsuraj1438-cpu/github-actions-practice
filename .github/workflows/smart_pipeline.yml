@@ -3,7 +3,7 @@ name: Smart_Pipline
 on:
  push: # Trigger workflow on push
    branches: # # Branch filter
-     - "*" # '*' = any branch
+     - "**" # '*' = any branch
 
 jobs:
   lint:
