@@ -11,7 +11,8 @@ jobs:
 
      - name: Check the secret exits
        env:
-         MY_SECRET: ${{secrets.MY_SECRET_MESSAGE}}
+         #MY_SECRET: ${{secrets.MY_SECRET_MESSAGE}}
+         MY_SECRET: ${{secrets.Hello}}
        run: |
         if [ -n "$MY_SECRET" ]; then
          echo "The secret is set: true"
