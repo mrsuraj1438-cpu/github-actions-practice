@@ -1,0 +1,16 @@
+name: Run Script
+
+on: workflow_dispatch
+
+jobs:
+  test-script:
+   runs-on: ubuntu-latest
+   steps:
+     - name: check out code
+       uses: actions/checkout@v5
+
+     - name: run the script
+       run: |
+        echo" this script is running"
+        chmod +x hello.sh
+        ./hello.sh
