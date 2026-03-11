@@ -11,6 +11,6 @@ jobs:
 
      - name: run the script
        run: |
-        echo" this script is running"
+        echo " this script is running"
         chmod +x hello.sh
         ./hello.sh
