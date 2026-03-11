@@ -13,8 +13,8 @@ jobs:
        env:
          MY_SECRET: ${{secrets.MY_SECRET_MESSAGE}}
        run: |
-       if: [ -n "$MY_SECRET" ]; then
+        if: [ -n "$MY_SECRET" ]; then
          echo "The secret is set: true"
-       else:
+        else:
          echo "The secret is set: false"
-       fi
+        fi
