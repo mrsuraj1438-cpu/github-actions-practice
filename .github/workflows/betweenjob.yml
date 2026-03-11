@@ -15,7 +15,7 @@ jobs:
      - name: upload the artifcat file
        uses: actions/upload-artifact@v4
        with:
-         name: job1artifcatfile
+         name: myfile
          path: file.txt
 
   job2:
@@ -28,7 +28,7 @@ jobs:
      - name: download the artifcat file
        uses: actions/download-artifact@v4
        with:
-         name: ob1artifcatfile
+         name: myfile
 
      - name: show the artifcate file content
        run: cat file.txt
