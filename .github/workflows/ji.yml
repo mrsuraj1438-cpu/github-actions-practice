@@ -1,0 +1,10 @@
+name: this is new
+
+on: workflow_dispatch
+
+jobs:
+  hi:
+   runs-on: ubuntu-latest
+   steps:
+     - name: print
+       run: ehco "hi"
