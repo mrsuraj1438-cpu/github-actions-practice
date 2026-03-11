@@ -1,9 +1,9 @@
 name: Smart_Pipline
 
-on:
- push: # Trigger workflow on push
-   branches: # # Branch filter
-     - "**" # '*' = any branch
+on: workflow_dispatch
+ #push: # Trigger workflow on push
+   #branches: # # Branch filter
+     #- "**" # '*' = any branch
 
 jobs:
   lint:
