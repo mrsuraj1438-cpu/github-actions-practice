@@ -7,8 +7,12 @@ on:
 
 
 jobs:
- build_image:   
+ build_image: 
+
    runs-on: ubuntu-latest
+   env:
+    Docker-name: ${{secrets.DOCKER_USERNAME}}
+    Docker-api: ${{secrets.DOCKER_TOKEN}}
    steps:
      - name: Check the repo code
        uses: actions/checkout@v5
@@ -37,5 +41,13 @@ jobs:
 
      - name: check the log
        run: docker logs myci
+
+     - name: docker login
+       run: docker login -u $Docker-name -p $Docker-api
+
+     - name: push the image to docker hub
+       run: docker push -t mrsuraj542/mygithubimage:v1
+
+
 
       
