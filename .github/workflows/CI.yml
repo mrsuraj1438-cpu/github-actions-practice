@@ -11,10 +11,14 @@ jobs:
 
   test:
    runs-on: ubuntu-latest
+   needs: Run_CI
    steps:
      - name: code verify
        uses:  actions/checkout@v5
-
+     
+     - name: pipe line stop the code
+       run: exit 1
+       
      - name: run the shell script
        run: |
         echo "My secript is running"
