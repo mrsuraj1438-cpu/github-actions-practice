@@ -1,6 +1,6 @@
 name: Docker Publish
 
-on: workflow_dispatch
+on: push
 
 jobs:
  build_image: 
@@ -10,6 +10,9 @@ jobs:
     #DOCKER_NAME: ${{secrets.DOCKER_USERNAME}}
     #DOCKER_API: ${{secrets.DOCKER_TOKEN}}
    steps:
+     - name: run only main push
+       if: github.ref == 'refs/head/main'
+       run: echo "This run on the only main branch"
      - name: Check the repo code
        uses: actions/checkout@v5
 
@@ -47,10 +50,10 @@ jobs:
          password: ${{ secrets.DOCKER_TOKEN }}
          
      - name: tag the image
-       run: docker tag mygithubimage mrsuraj542/mygithubimage:v2
+       run: docker tag mygithubimage mrsuraj542/mygithubimage:v3
        
      - name: push the image to docker hub
-       run: docker push  mrsuraj542/mygithubimage:v2
+       run: docker push  mrsuraj542/mygithubimage:v3
 
 
 
