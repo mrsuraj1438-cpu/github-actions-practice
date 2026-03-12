@@ -1,0 +1,253 @@
+# This task DAY-43
+
+
+Task 1: Multi-Job Workflow
+Create .github/workflows/multi-job.yml with 3 jobs:
+
+build — prints "Building the app"
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run first job
+        run: echo "Job 1 completed successfully"
+
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run second job
+        run: echo "Job 2 runs after Job 1 success"
+
+
+test — prints "Running tests" : # same above concept
+deploy — prints "Deploying"    # same above concept
+
+Make test run only after build succeeds. Make deploy run only after test succeeds.
+# needs: we use the needs keyword to run a job only after another job successfully completes.
+
+
+Verify: Check the workflow graph in the Actions tab — does it show the dependency chain? # yes
+
+
+Task 2: Environment Variables
+
+"Environment Variables are named values stored in memory that can be used inside a workflow.
+
+They help us store data once and reuse it many times."
+ 
+
+
+name: Environment Variables
+
+on: workflow_dispatch
+
+# Workflow level
+env:
+  APP_NAME: myapp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Job level
+    env:
+      ENVIRONMENT: staging
+
+    steps:
+      - name: Print workflow and job variables
+        run: |
+          echo "Workflow env: $APP_NAME"
+          echo "Job env: $ENVIRONMENT"
+      
+        # step lever par env set
+      - name: Print step variable
+        env:
+          VERSION: 1.0.0
+        run: |
+          echo "Step env: $VERSION"
+
+      - name: Print GitHub context variables
+        run: |
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Triggered by: ${{ github.actor }}"
+
+
+echo "Commit SHA: ${{github.sha}}" # show the commit id
+echo "Triggred by the run: ${{github.actor}}" # who run the this workflow : if you run this on the github account then it is show your github account name
+
+
+Task 3: Job Outputs
+
+step1: A job output is a value produced by one job that other jobs can use later.
+
+  
+Create a job that sets an output — e.g., today's date as a string
+
+#!/bin/bash
+# Capture date in YYYY-MM-DD format
+OUTPUT_DATE=$(date +%Y-%m-%d)
+
+# Set it as an environment variable or use it
+echo "Today's date is: $OUTPUT_DATE"
+
+Create a second job that reads that output and prints it
+
+
+Pass the value using outputs: and needs.<job>.outputs.<name>
+Step output → Job output → Used by another job
+
+${{ steps.date_step.outputs.today }}
+
+Explanation:
+
+steps        → access workflow steps
+date_step    → step ID
+outputs      → outputs created by step
+today        → output variable
+
+
+Why we use Job Outputs?
+1. Share data between jobs
+
+Jobs in GitHub Actions run separately.
+So we use outputs to pass information.
+
+Example:
+
+Job1 → build image → produce image_tag
+Job2 → deploy → use image_tag
+
+
+2. Dynamic workflows
+
+Sometimes values are generated during runtime.
+
+Example:
+
+date
+version
+artifact name
+docker tag
+
+3. Real DevOps use case
+
+Example:
+
+Job1 → generate version
+Job2 → build image with that version
+Job3 → deploy using that version
+
+
+
+
+
+
+
+
+# Workflow Name
+name: Job Output Example
+
+# This workflow can be triggered manually from the GitHub Actions tab
+on: workflow_dispatch
+
+jobs:
+
+  # -----------------------------
+  # Job 1: Generate today's date
+  # -----------------------------
+  get-date:
+    runs-on: ubuntu-latest
+
+    # Convert the step output into a job output
+    # This allows other jobs to access the value
+    outputs:
+      today_date: ${{ steps.date_step.outputs.today }}
+
+    steps:
+      # Step: Generate today's date
+      - name: Get today's date
+        id: date_step
+        run: |
+          # Create a variable called "today"
+          # and store the current date in YYYY-MM-DD format
+          echo "today=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+
+
+  # -----------------------------------
+  # Job 2: Use the output from Job 1
+  # -----------------------------------
+  use-date:
+    # This job will run only after get-date job finishes
+    needs: get-date
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print today's date from previous job
+        run: |
+          # Access the job output using the needs context
+          echo "Today's date is: ${{ needs.get-date.outputs.today_date }}"
+
+
+
+
+Task 4: Conditionals
+In a workflow, add:
+
+A step that only runs when the branch is main : done
+
+A step that only runs when the previous step failed:
+
+A job that only runs on push events, not on pull requests:
+
+A step with continue-on-error: true — what does this do?
+
+continue-on-error: true is a step-level option in GitHub Actions that tells the runner:
+
+“Even if this step fails, don’t stop the workflow. Continue running the next steps.”
+
+Without it, any step failure stops the entire job by default.
+
+
+
+name: Conditional Workflow Example
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  example-job:
+    # Job runs only on push events
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step that runs only on main branch
+      - name: Run only on main branch
+        if: github.ref == 'refs/heads/main'
+        run: echo "This step runs only on the main branch"
+
+      # Step that is allowed to fail
+      - name: Step that may fail
+        continue-on-error: true
+        run: |
+          echo "This step will fail but workflow will continue"
+          exit 1
+
+      # Step that runs only if previous step failed
+      - name: Run if previous step failed
+        if: failure()
+        run: echo "Previous step failed"
+
+
+
+
+
+
+
+
