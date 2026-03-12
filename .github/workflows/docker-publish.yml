@@ -15,14 +15,25 @@ jobs:
 
      - name: Docker build the image
        run: docker build -t mygithubimage .
-
-     - name: docker run
-       run: docker run -d -p 5050:80 --name myci mygithubimage
+       
      - name: check the images
        run: docker images
 
+     - name: docker run
+       run: docker run -d -p 5050:80 --name myci mygithubimage
+       
+     - name: Wait for container to start
+       run: sleep 5
+
+
      - name: docker check running container
        run: docker ps
+
+     - name: verify the port is accible 
+       run: docker port myci 
+     
+     - name: test container end point
+       run: curl http://localhost:5050
 
      - name: check the log
        run: docker logs myci
