@@ -1,0 +1,25 @@
+name:  SECRET CHECK
+
+on: workflow_dispatch
+
+jobs:
+  secret:
+   runs-on: ubuntu-latest
+   steps:
+     - name: code check
+       uses: actions/checkout@v4
+
+     - name: Check the secret exits
+       env:
+         #MY_SECRET: ${{secrets.MY_SECRET_MESSAGE}}
+         MY_SECRET: ${{secrets.Hello}}
+       run: |
+        if [ -n "$MY_SECRET" ]; then
+         echo "The secret is set: true"
+        else
+         echo "The secret is set: false"
+        fi
+
+     - name: MY SECRET value
+       run: |
+        echo "MY SECRETS is: ${{secrets.MY_SECRET_MESSAGE}}"

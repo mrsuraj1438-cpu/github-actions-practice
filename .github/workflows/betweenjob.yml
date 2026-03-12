@@ -1,0 +1,34 @@
+name: Between Artifacts Jobs
+
+on: workflow_dispatch
+
+jobs:
+  job1:
+   runs-on: ubuntu-latest
+   steps:
+     - name: Code check 
+       uses: actions/checkout@v5
+
+     - name: create a file
+       run: echo " this file is crearte in job1" > file.txt
+
+     - name: upload the artifcat file
+       uses: actions/upload-artifact@v4
+       with:
+         name: myfile
+         path: file.txt
+
+  job2:
+   runs-on: ubuntu-latest
+   needs: job1
+   steps:
+     - name: Code check 
+       uses: actions/checkout@v5
+
+     - name: download the artifcat file
+       uses: actions/download-artifact@v4
+       with:
+         name: myfile
+
+     - name: show the artifcate file content
+       run: cat file.txt

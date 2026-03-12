@@ -1,0 +1,43 @@
+name: Matrix workflow Test
+
+on: workflow_dispatch
+
+# push:
+ #  branches:
+  #   - main
+
+jobs:
+  test:
+   
+   runs-on: ${{ matrix.os}}
+   
+   strategy:
+     matrix:
+       os: [ubuntu-latest, windows-latest]
+       python-version: ["3.10", "3.11", "3.12"]
+   
+   steps:
+     
+     - name: check the code
+       uses: actions/checkout@v4
+     
+     - name: setup python 
+       uses: actions/setup-python@v5
+       with:
+         python-version: ${{ matrix.python-version }}
+    
+     - name: python-version
+       run: python --version
+       
+     - name: Show Linux OS info
+       if: runner.os == 'Linux'
+       run: cat /etc/os-release
+       
+     - name: Show Windows OS info
+       if: runner.os == 'Windows'
+       run: systeminfo
+    
+     - name: Print OS
+       run: echo "print OS ${{ matrix.os}}"
+
+    

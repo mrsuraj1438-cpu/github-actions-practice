@@ -1,0 +1,38 @@
+name: Smart_Pipline
+
+on: workflow_dispatch
+ #push: # Trigger workflow on push
+  # branches: # # Branch filter
+    # - "**" # '*' = any branch
+
+jobs:
+  lint:
+   runs-on: ubuntu-latest
+   steps:
+     - name: check the code
+       uses: actions/checkout@v4
+
+     - name: this command run on the lint job
+       run: echo "hello this is run on the lint job"
+
+  test:
+   runs-on: ubuntu-latest
+   steps:
+     - name: check the code
+       uses: actions/checkout@v4
+     
+     - name: this command run on the test job
+       run: echo "hello this is run on the test job"
+
+  summary:
+   runs-on: ubuntu-latest
+   needs: [lint, test] # # Runs only after both build and test finish
+   steps:
+     - name: code check
+       uses: actions/checkout@v4
+
+     - name: check which branch push and their commit
+       run: |
+        echo "the code is push by branch is: ${{ github.ref_name}}"
+        echo "the full info who push the code: $GITHUB_REF"
+        echo "access the commit id: ${{github.event.head_commit.message}}"

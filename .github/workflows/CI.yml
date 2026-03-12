@@ -1,0 +1,29 @@
+name: Run Real Tests in CI
+
+on: workflow_dispatch
+
+jobs:
+  Run_CI:
+   runs-on: ubuntu-latest
+   steps:
+     - name: code check
+       uses: actions/checkout@v5
+
+  test:
+   runs-on: ubuntu-latest
+   needs: Run_CI
+   steps:
+     - name: code verify
+       uses:  actions/checkout@v5
+     
+     - name: pipe line stop the code (use exit 0)/ success the pipe line exit 0 
+       run: |
+        echo "hello"
+        exit 0  # stops script, but workflow continues → SUCCESS
+        echo "This never run" # This never runs
+       
+     - name: run the shell script
+       run: |
+        echo "My secript is running"
+        chmod +x newshellscrit.sh
+        ./newshellscrit.sh

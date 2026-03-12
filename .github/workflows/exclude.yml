@@ -1,0 +1,39 @@
+name: Matrix Exclude Test
+
+on: 
+ workflow_dispatch:
+  inputs:
+    environments:
+     description: "choose Environment (staging or production"
+     required: true
+     default: "staging"
+
+jobs:
+  matrix_exclude:
+   runs-on: ${{matrix.os}}
+
+   strategy:
+    fail-fast: false
+    matrix:
+       os: [ubuntu-latest, windows-latest]
+       python-version: ["3.10", "3.11", "3.12"]
+
+       exclude:
+         - os: windows-latest
+           python-version: "3.10"
+
+   steps:
+     - name: checkout code
+       uses: actions/checkout@v4
+
+     - name: setup python
+       uses: actions/setup-python@v5
+       with:
+         python-version: ${{ matrix.python-version}}
+         
+     - name: check the OS version 
+       run: echo " OS version ${{ runner.os}}"
+
+     - name: print the Python version
+       run: python --version
+       

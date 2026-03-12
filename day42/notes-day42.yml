@@ -1,0 +1,228 @@
+Task 1: GitHub-Hosted Runiners
+
+Q1. Create a workflow with 3 jobs, each on a different OS:
+Q2. In each job, print:
+
+The OS name
+The runner's hostname
+The current user running the job
+
+Q3. Watch all 3 run in parallel
+ 
+  ubuntu-latest : # There
+     - name: display runners host
+       run: |
+        echo "The OS version ${{ runner.os}}" # The OS name print the command
+        echo " The runner's run on the hostname is: $(hostname)" # The runner's hostname print 
+        echo "The current user running on the job: $(whoami)" # The current user running on the job
+ 
+  windows-latest:   
+   windows_os:
+   runs-on: windows-latest
+   steps:
+   
+    - name: Print Windows info
+      run: |
+       echo "The OS version ${{ runner.os}}" # # The OS name print the command
+       echo "The runner host name is: $env:COMPUTERNAME" # The runner's hostname print
+       echo "The current user running on the jobi s: $env:USERNAME" # The current user running on the job
+ 
+  macos-latest:
+   mac_os:
+   runs-on: macos-latest
+   steps:
+
+     - name: Print macOS info
+       run: |
+        echo "The OS version ${{ runner.os}}" # The OS name print the command
+        echo " The runner's run on the hostname is: $(hostname)" #  # The runner's hostname print
+        echo "The current user running on the job: $(whoami)" # The current user running on the job
+
+
+
+Write in your notes: What is a GitHub-hosted runner? Who manages it?
+
+Ans: The GitHub-hosted runner is where you run your job when you write your job it compulsory to where this job is running it means either self-hosted runner or in build hosted runner is provided by Github . it depends on you what you need as per your requirements.
+
+The GitHub-hosted runner is manages by github community developer and where self-hosted runner manages by indvidual developer who can create this .
+
+
+Task 2: Explore What's Pre-installed
+On the ubuntu-latest runner, run a step that prints:
+Docker version
+Python version
+Node version
+Git version
+
+    - name: Print the software versions
+      run: |
+       echo "Print the version of Docker: $(docker --version)"
+       echo "Print the version of Python: $(python3 --version)"
+       echo "Print the version of Node: $(node --version)"
+       echo "Print the version of git: $(git --version)"
+
+
+Look up the GitHub docs for the full list of pre-installed software on ubuntu-latest
+
+Write in your notes: Why does it matter that runners come with tools pre-installed?
+because it is matter if you need any software on the runners you can write the command then you installed it is like manual work but the pre-installed toolssave to our time and fast working on the CI workflow.
+
+Pre‑installed tools on runners help you write CI workflows without installing everything yourself. 
+
+
+
+Task 3: Set Up a Self-Hosted Runner
+A Self-Hosted Runner is simply: A machine (your laptop, server, or cloud VM) connected to GitHub that executes workflow jobs. 
+
+  But sometimes we need our own machine to run jobs because:
+
+✅ Custom software installed
+✅ More CPU/RAM
+✅ Access to private network
+✅ Long running jobs
+✅ Cheaper than GitHub minutes
+
+
+Go to your GitHub repo → Settings → Actions → Runners → New self-hosted runner
+Choose Linux as the OS
+
+
+afterthat: # Run this command on : A cloud VM (EC2, Utho, or any VPS) or Your local machine
+  step1: # Create a folder under the drive root
+         $ mkdir actions-runner; cd actions-runner
+  step2: # Download the latest runner package
+
+         $ curl -o actions-runner-linux-x64-2.332.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.332.0/actions-runner-linux-x64-2.332.0.tar.gz
+   
+  step3: # Extract the installer
+         $ tar xzf ./actions-runner-linux-x64-2.332.0.tar.gz
+
+  step4: # Create the runner and start the configuration experience
+         $ ./config.sh --url https://github.com/mrsuraj1438-cpu/github-actions-practice --token BWMBQ2RB47PGOWUHUAJEMLTJV7MN6
+  
+  step5: # Last step, run it!
+         $ ./run.sh
+
+  step6: # Use this YAML in your workflow file for each job
+         runs-on: self-hosted
+
+Verify: Your runner appears in the Runners list with a green dot.
+
+ans: yes,Go to your GitHub repo → Settings → Actions → Runners
+
+key-point: if your jobs done when you exit your self-hosted runner machine:
+  then: if you again start the self-hosted runner machine 
+    justsimple: use this command: 
+     step1: cd actions-runner # move the this folder where you setup configuratin
+     step2: ./run.sh # this command run the self-hosted runner 
+
+
+Task 5: Labels
+Add a label to your self-hosted runner (e.g., my-linux-runner)
+step1: go to actions tab --> seting tab--> click actions--> runners click --> click your on runner name: --> icon seting write inside your label name(my-ubunut)
+
+Update your workflow to use runs-on: [self-hosted, my-linux-runner]
+
+Trigger it — does it still pick up the job? yes
+
+Write in your notes: Why are labels useful when you have multiple self-hosted runners?
+Ans: Labels are useful because when we have multiple self-hosted runners with different operating systems or purposes, labels help us easily identify and select the correct runner for a workflow.
+
+Without labels it is difficult to remember which runner is Linux, Windows, or macOS.
+
+#Step 1 – Multiple runners exist
+
+Suppose we have 3 self-hosted runners:
+
+Runner 1 → Linux machine
+
+Runner 2 → Windows machine
+
+Runner 3 → macOS machine
+
+
+#Step 2 – Add labels to runners
+
+We add labels to identify them:
+
+Linux runner → linux-runner
+
+Windows runner → windows-runner
+
+macOS runner → macos-runner
+
+
+Now it is easy to remember which runner is which.
+
+#Step 3 – Use labels in workflow
+
+In the workflow file we can specify which runner should execute the job.
+
+Example:
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux-runner]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Running on Linux self-hosted runner"
+
+
+Example Scenario
+
+If a job requires Linux environment, we use:
+
+runs-on: [self-hosted, linux-runner]
+
+If a job requires Windows environment, we use:
+
+runs-on: [self-hosted, windows-runner]
+
+So the job will run on the correct machine.
+
+# Task:5 
+#
+GitHub-Hosted vs Self-Hosted
+
+Feature            | GitHub-Hosted                          | Self-Hosted
+-------------------|----------------------------------------|-----------------------------------------
+Who manages it?    | Managed by GitHub                      | Managed by user / organization
+Cost               | Free with limited minutes, extra paid | You pay for your own server / machine
+Pre-installed tools| Many tools already installed           | You install tools manually
+Good for           | Quick CI/CD and small projects         | Custom environments and large builds
+Security concern   | Code runs on GitHub cloud machines     | You must secure your own server
+
+
+
+
+
+
+
+
+
+
+
+
+# this how your file information contain
+
+-rwxrwxr-t 1 master-node docker 0 Jan 31 05:38 file.txt
+││ │ │ │ │  │ │         │      │ │   │   │     │
+││ │ │ │ │  │ │         │      │ │   │   │     └── File name
+││ │ │ │ │  │ │         │      │ │   │   └──────── Time modified
+││ │ │ │ │  │ │         │      │ │   └──────────── Day
+││ │ │ │ │  │ │         │      │ └──────────────── Month
+││ │ │ │ │  │ │         │      └────────────────── File size (bytes)
+││ │ │ │ │  │ │         └───────────────────────── Group owner
+││ │ │ │ │  │ └─────────────────────────────────── File owner
+││ │ │ │ │  └───────────────────────────────────── Number of links
+││ │ │ │ └──────────────────────────────────────── Others permissions
+││ │ │ └────────────────────────────────────────── Group permissions
+││ │ └──────────────────────────────────────────── Owner permissions
+││ └────────────────────────────────────────────── Permission section
+│└───────────────────────────────────────────────── File type
+└────────────────────────────────────────────────── Start of output 
+
+
+
+

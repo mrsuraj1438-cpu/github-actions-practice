@@ -1,0 +1,598 @@
+# DAY-44 TASK:
+#
+# Task 1: GitHub Secrets
+GitHub Secrets are hidden variables used in GitHub Actions workflows to store sensitive information safely.
+Examples of secrets:
+
+API Keys
+
+Passwords
+
+Access Tokens
+
+Database credentials
+example: 
+"
+AWS_ACCESS_KEY
+DOCKER_PASSWORD
+API_TOKEN
+"
+howo to access the secret: password = ${{ secrets.SECRET_Name }}
+
+Go to your repo → Settings → Secrets and Variables → Actions
+
+repo → Settings → Secrets and Variables → Actions --> after that select what you want either secretes or varaibl: according to set the name and their value
+
+Create a secret called MY_SECRET_MESSAGE : done
+
+Create a workflow that reads it and prints: The secret is set: true (never print the actual value) run: echo" My secret set is: ${{secrets.Mysec ! == '')
+
+       env:
+         #MY_SECRET: ${{secrets.MY_SECRET_MESSAGE}}
+         MY_SECRET: ${{secrets.Hello}}
+       run: |
+        if [ -n "$MY_SECRET" ]; then
+         echo "The secret is set: true"
+        else
+         echo "The secret is set: false"
+        fi
+
+
+
+Try to print ${{ secrets.MY_SECRET_MESSAGE }} directly — what does GitHub show?
+GitHub does not show the real value of the secret in the logs.
+Instead, it masks the value and prints: ***
+
+GitHub hides secrets to protect sensitive data such as:
+
+API keys
+
+Tokens
+
+Passwords
+
+Private keys
+
+So even if someone checks the Actions logs, they cannot see the real secret value.
+
+Example Log Output
+Run echo "${{ secrets.MY_SECRET_MESSAGE }}"
+***
+
+Write in your notes: Why should you never print secrets in CI logs?
+
+Why should you never print secrets in CI logs?
+
+Because if you print the secret, your sensitive information can leak.
+Other people can see these values in the CI/CD logs and misuse them.
+
+These secrets can be:
+- API keys
+- database passwords
+- access tokens
+- private credentials
+
+If someone gets these secrets they can:
+- access your system
+- change or delete data
+- use your API services
+- stop or damage your production system
+
+That is why we should never print secrets in CI logs.
+
+Example (Wrong Way):
+
+- name: Print Secret
+  run: echo "${{ secrets.MY_SECRET }}"
+
+If someone checks the logs, the secret could be exposed (GitHub hides it as *** but printing secrets is still a bad practice).
+
+Better Way:
+
+- name: Check if secret exists
+  run: |
+    if [ -z "${{ secrets.MY_SECRET }}" ]; then
+      echo "Secret not found"
+    else
+      echo "Secret is configured"
+    fi
+
+
+Task 2: Use Secrets as Environment Variables
+Pass a secret to a step as an environment variable -- done
+Use it in a shell command without ever hardcoding it -- done
+Add DOCKER_USERNAME and DOCKER_TOKEN as secrets (you'll need these on Day 45) -- done
+
+
+Task 3: Upload Artifacts
+step: Artifacts are files produced by a workflow job and stored by GitHub.
+
+Examples:
+
+"build files
+logs
+test reports
+compiled binaries
+coverage reports
+"
+Example file created during workflow:
+
+"
+output.txt
+test-report.html
+build.zip
+"
+
+"
+Because GitHub runners are temporary machines.
+
+When a job finishes:
+
+Runner machine → deleted
+Files → lost
+
+So if you want to keep files, you must upload them as artifacts.
+
+Reasons:
+
+1️⃣ Save build results
+2️⃣ Save logs for debugging
+3️⃣ Share files between jobs
+4️⃣ Download results from GitHub UI
+
+Example:
+
+build job → creates app.zip
+upload artifact → store in GitHub
+download later
+
+
+
+
+Create a step that generates a file — e.g., a test report or a log file
+
+Use actions/upload-artifact to save it
+After the workflow runs, download the artifact from the Actions tab
+
+
+Task 3: Upload Artifacts
+Create a step that generates a file — e.g., a test report or a log file
+Use actions/upload-artifact to save it
+After the workflow runs, download the artifact from the Actions tab
+Verify: Can you see and download it from GitHub?
+
+Task 4: Download Artifacts Between Jobs
+Job 1: generate a file and upload it as an artifact
+Job 2: download the artifact from Job 1 and use it (print its contents)
+Write in your notes: When would you use artifacts in a real pipeline?
+
+
+
+  # how to create file 
+       - name: create a file
+       run: echo " this file is crearte in job1" > file.txt
+         
+         # how to upload this file on the github
+         #
+     - name: upload the artifcat file
+       uses: actions/upload-artifact@v4
+       with:
+         name: myfile
+         path: file.txt
+
+
+
+
+
+
+           # thise step is download the create file by job1
+
+  job2:
+   runs-on: ubuntu-latest
+   needs: job1
+   steps:
+     - name: Code check
+       uses: actions/checkout@v5
+
+     - name: download the artifcat file
+       uses: actions/download-artifact@v4
+       with:
+         name: myfile
+
+
+     - name: show the artifcate file content
+       run: cat file.txt
+
+
+
+
+  Write in your notes: When would you use artifacts in a real pipeline?
+because when we need the log file that can be create a job1(build)
+and check this log that time is veryimportant to checkWhen would you use artifacts in a real pipeline?
+
+Artifacts are used when we want to save files from one job and use them later
+or download them after the pipeline finishes.
+
+For example, when a build job creates some important files like:
+- log files
+- build outputs
+- test reports
+- compiled application files
+
+These files can be stored as artifacts so that other jobs or developers
+can access them later.
+
+Real Example:
+
+Suppose we have a CI pipeline with two jobs:
+
+Job 1: Build
+This job builds the project and creates a log file.
+
+Example:
+build.log
+
+Sometimes the build fails or we want to check what happened during the build.
+So we upload this log file as an artifact.
+
+Job 2: Debug / Review
+Later we download that artifact and check the log file to understand the problem.
+
+So artifacts help us:
+- store important files
+- share files between jobs
+- debug pipeline failures
+- download build results
+
+That is why artifacts are very useful in real CI/CD pipelines.
+
+
+Task 5: Run Real Tests in CI
+Take any script from your earlier days (Python or Shell) and run it in CI:
+
+Add your script to the github-actions-practice repo
+Write a workflow that:
+  Checks out the code : actions/checkout@v5
+Installs any dependencies needed
+         Runs the script : chmod +x filename
+                           ./finename
+
+fails the pipeline if the script exits with a non-zero code:
+ Key points
+
+exit always stops the script.
+
+The number matters:
+
+0 → stop + success
+
+Non-zero → stop + failure
+
+This is why we use exit 1 (or any non-zero) to stop a pipeline in GitHub Actions when a check fails.
+
+  Intentionally break the script — verify the pipeline goes red: yes
+
+         Fix it — verify it goes green again: done
+
+
+Compare with exit 1
+echo "Hello"
+exit 0   # stops script, but workflow continues → SUCCESS
+echo "World"  # This never runs
+
+Script stops at exit 0, but GitHub Actions treats it as success.
+
+echo "Hello"
+exit 1   # stops script and FAILS workflow
+echo "World"  # This never runs
+
+Script stops at exit 1, GitHub Actions fails the job.
+
+
+how to install python:
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+how to install dependecny:
+    - name: install dependency
+      run: |
+        sudo apt-get update 
+        sudo apt-get install python3-pip -y
+
+
+#this code run the scrit          
+- name: Run Python Script
+  run: |
+    echo "My script is running"
+    python3 main.py
+============================================================================================================================================================Caching in GitHub Actions
+
+1. What is Caching?
+
+Caching is a technique used to save dependencies or files during a workflow run so they can be reused in future runs.
+
+Instead of downloading dependencies every time the workflow runs, GitHub restores them from the cache.
+
+This makes the CI/CD pipeline faster.
+
+--------------------------------------------------
+
+2. Why do we use Caching?
+
+Without caching:
+Every workflow run downloads dependencies again.
+This makes the pipeline slower.
+
+Example:
+
+Workflow Run 1
+Download dependencies
+Run job
+
+Workflow Run 2
+Download dependencies again
+Run job
+
+
+With caching:
+
+Workflow Run 1
+Download dependencies
+Save cache
+
+Workflow Run 2
+Restore cache
+Run job (faster)
+
+Benefits:
+- Faster pipelines
+- Less network usage
+- Efficient CI/CD
+
+--------------------------------------------------
+
+3. What is being Cached?
+
+Usually dependency folders are cached.
+
+Examples:
+
+Python  -> ~/.cache/pip
+Node.js -> node_modules
+Maven   -> ~/.m2
+Gradle  -> ~/.gradle
+
+Example for Python:
+The pip package cache folder (~/.cache/pip) is saved so packages do not need to be downloaded again.
+
+--------------------------------------------------
+
+4. Where is the Cache Stored?
+
+The cache is stored in GitHub's cloud storage, not inside the repository.
+
+Flow:
+
+GitHub Runner
+      ↓
+Save cache
+      ↓
+GitHub Cache Storage
+      ↓
+Next Workflow Run
+      ↓
+Restore cache
+
+Each workflow run uses a temporary virtual machine, so caching allows files from previous runs to be reused.
+
+--------------------------------------------------
+
+5. How to Use Caching in GitHub Actions
+
+GitHub provides the action:
+
+actions/cache
+
+Example:
+
+- name: Cache pip dependencies
+  uses: actions/cache@v4
+  with:
+    path: ~/.cache/pip
+    key: pip-${{ hashFiles('requirements.txt') }}
+
+Explanation:
+
+path
+The folder that will be cached.
+
+key
+A unique identifier for the cache.
+
+If requirements.txt changes, a new cache will be created.
+
+--------------------------------------------------
+
+6. Simple Caching Flow
+
+Push Code
+   ↓
+Workflow Starts
+   ↓
+Check Cache
+   ↓
+Cache Found?
+   ↓           ↓
+Yes            No
+↓              ↓
+Restore Cache  Install Dependencies
+               ↓
+               Save Cache
+               ↓
+               Run Job
+
+--------------------------------------------------
+
+7. Short Definition
+
+Caching in GitHub Actions saves dependencies in GitHub storage so they can be reused in future workflow runs, making the pipeline faster.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================================================================================================================================================
+title: GitHub Actions Caching Notes
+
+caching_concept:
+  description: >
+    Caching in GitHub Actions saves dependencies from previous workflow runs
+    so they can be reused later. This reduces download time and makes the
+    pipeline faster.
+
+why_use_caching:
+  - Faster CI/CD pipelines
+  - Avoid downloading dependencies repeatedly
+  - Reduce network usage
+  - Improve workflow efficiency
+
+where_cache_is_stored:
+  description: >
+    Cache is stored in GitHub Actions cloud storage.
+    Each workflow run uses a temporary runner, so caching allows
+    files from previous runs to be restored.
+
+what_can_be_cached:
+  python: "~/.cache/pip"
+  nodejs: "node_modules"
+  maven: "~/.m2"
+  gradle: "~/.gradle"
+
+basic_cache_example:
+  description: Cache Python pip dependencies
+  workflow_step: |
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: pip-${{ hashFiles('requirements.txt') }}
+
+installation_example:
+  description: Install dependencies from requirements file
+  command: |
+    pip install -r requirements.txt
+
+multiple_requirements_files_strategy:
+  description: >
+    Sometimes projects contain multiple dependency files like
+    requirements.txt, dev-requirements.txt, or test-requirements.txt.
+    In such cases a pattern can be used to generate a combined cache key.
+
+  cache_key_example: |
+    key: pip-${{ hashFiles('**requirements*.txt') }}
+   
+      # when your hasfile is match then install according the need for dependency
+     - name: Install dependencies
+   run: pip install -r requirements.txt
+  explanation: >
+    This creates a cache key based on all files matching the pattern.
+    If any dependency file changes, the cache will refresh.
+
+specific_file_cache_strategy:
+  description: >
+    If caching is required only for a specific dependency file,
+    reference that file directly in hashFiles().
+
+  example: |
+    key: pip-${{ hashFiles('dev-requirements.txt') }}
+
+  installation: |
+    pip install -r dev-requirements.txt
+
+important_note:
+  explanation: >
+    hashFiles() only creates the cache key.
+    The actual dependency file used depends on the pip install command.
+
+  example: |
+    pip install -r requirements.txt
+
+simple_flow:
+  steps:
+    - Push code to repository
+    - GitHub workflow starts
+    - Cache is checked using the key
+    - If cache exists → restore dependencies
+    - If cache not found → install dependencies
+    - Save cache for future workflow runs
+
+short_definition: >
+  GitHub Actions caching stores dependencies in GitHub storage so
+  future workflow runs can reuse them and execute faster.
+
