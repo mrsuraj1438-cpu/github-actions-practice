@@ -51,13 +51,13 @@ jobs:
          password: ${{ secrets.DOCKER_TOKEN }}
          
      - name: tag the image
-       run: docker tag mygithubimage mrsuraj542/mygithubimage:v4
+       run: docker tag mygithubimage mrsuraj542/mygithubimage:sha-${GITHUB_SHA::7}
        
      - name: push the image to docker hub only by the main branch
        if: github.ref == 'refs/heads/main'
        run: |
         echo "This run on the only main branch"
-        docker push  mrsuraj542/mygithubimage:v4
+        docker push  mrsuraj542/mygithubimage:sha-${GITHUB_SHA::7}
 
 
 
