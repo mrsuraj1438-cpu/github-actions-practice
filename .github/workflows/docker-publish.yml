@@ -33,7 +33,7 @@ jobs:
        run: docker port myci 
      
      - name: test container end point
-       run: curl http://localhost:5050
+       run: curl -i http://localhost:5050
 
      - name: check the log
        run: docker logs myci
