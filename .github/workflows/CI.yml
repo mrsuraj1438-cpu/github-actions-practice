@@ -3,7 +3,7 @@ name: Run Real Tests in CI
 on: workflow_dispatch
 
 jobs:
-  Run CI:
+  Run_CI:
    runs-on: ubuntu-latest
    steps:
      - name: code check
