@@ -19,7 +19,8 @@ jobs:
      - name: pipe line stop the code (use exit 0)/ success the pipe line exit 0 
        run: |
         echo "hello"
-        exit 0
+        exit 0  # stops script, but workflow continues → SUCCESS
+        echo "This never run" # This never runs
        
      - name: run the shell script
        run: |
