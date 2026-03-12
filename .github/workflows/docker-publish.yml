@@ -11,8 +11,8 @@ jobs:
 
    runs-on: ubuntu-latest
    env:
-    Docker-name: ${{secrets.DOCKER_USERNAME}}
-    Docker-api: ${{secrets.DOCKER_TOKEN}}
+    DOCKER_NAME: ${{secrets.DOCKER_USERNAME}}
+    DOCKER_API: ${{secrets.DOCKER_TOKEN}}
    steps:
      - name: Check the repo code
        uses: actions/checkout@v5
@@ -43,10 +43,13 @@ jobs:
        run: docker logs myci
 
      - name: docker login
-       run: docker login -u $Docker-name -p $Docker-api
+       run: docker login -u DOCKER_NAME -p $DOCKER_API
 
+     - name: tag the image
+       run: docker tag mygithubimage mrsuraj542/mygithubimage:v1
+       
      - name: push the image to docker hub
-       run: docker push -t mrsuraj542/mygithubimage:v1
+       run: docker push  mrsuraj542/mygithubimage:v1
 
 
 
