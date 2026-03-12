@@ -43,7 +43,7 @@ jobs:
        run: docker logs myci
 
      - name: docker login
-       run: echo $Docker_API | docker login -u $DOCKER_NAME --password-stdin
+       run: echo "$Docker_API" | docker login -u "$DOCKER_NAME" --password-stdin
 
      - name: tag the image
        run: docker tag mygithubimage mrsuraj542/mygithubimage:v1
