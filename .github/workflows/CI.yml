@@ -17,7 +17,7 @@ jobs:
        uses:  actions/checkout@v5
      
      - name: pipe line stop the code (use exit 0)/ success the pipe line exit 0 
-       run: echo "hello"
+       run: exit 0
        
      - name: run the shell script
        run: |
