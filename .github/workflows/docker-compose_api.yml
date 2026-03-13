@@ -5,7 +5,7 @@ on: workflow_dispatch
 jobs:
   CD_deploy:
    env:
-     DOCKER_USER: ${{ vars.DOCKERHUB_USER }}
+     DOCKER_USER: ${{ vars.DOCKER_USERNAME}}
    runs-on: self-hosted
    steps:
      - name: code check
