@@ -1,0 +1,21 @@
+name: Practice self hosted runner
+
+on: workflow_dispatch
+
+jobs:
+  practice_self:
+   runs-on: self-hosted
+   steps:
+     - name: code check
+       uses: actions/checkout@v5
+
+     - name: print the os version of seflhosted runner
+       run: cat /etc/os-release
+
+     - name: hostname info
+       run: |
+        echo "the hostname: $(hostname)"
+        echo "the current user: $(whoami)"
+        echo "Shows all users currently logged into the system: $(who)"
+        echo "memory availabe: $(free -h)"
+        echo "disk available: $(htop)"
