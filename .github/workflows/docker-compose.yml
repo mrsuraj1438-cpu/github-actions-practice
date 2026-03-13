@@ -1,0 +1,15 @@
+name: deploy the image to self-hosted
+
+on: workflow_dispatch
+
+jobs:
+  CD_deploy:
+   env:
+     DOCKER_USER: ${{ vars.DOCKERHUB_USER }}
+   runs-on: self-hosted
+   steps:
+     - name: code check
+       uses: actions/checkout@v5
+
+     - name: deploy with Docker Compose
+       run: docker compose up -d --build
