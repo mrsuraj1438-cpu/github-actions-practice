@@ -24,6 +24,6 @@ jobs:
          tags: |
           ${{ vars.DOCKER_USERNAME }}/github-actions-app:${{ github.ref_name}}
           ${{ vars.DOCKER_USERNAME }}/github-actions-app:v1
-          ${{ vars.DOCKER_USERNAME }}/${{ vars.GITHUB_REPO}}:${{ github.sha}}
+          ${{ vars.DOCKER_USERNAME }}/github-actions-app:${{ github.sha}}
           
          
