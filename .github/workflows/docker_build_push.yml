@@ -22,8 +22,8 @@ jobs:
          file: ./lintDocker
          push: true
          tags: |
-          ${{ 'secrets.DOCKER_USERNAME' }}/github-actions-app:${{ github.ref_name}}
-          ${{ 'secrets.DOCKER_USERNAME' }}/github-actions-app:v1
-          ${{ 'secrets.DOCKER_USERNAME' }}/${{ vars.GITHUB_REPO}}:${{ github.sha}}
+          ${{ secrets.DOCKER_USERNAME }}/github-actions-app:${{ github.ref_name}}
+          ${{ secrets.DOCKER_USERNAME }}/github-actions-app:v1
+          ${{ secrets.DOCKER_USERNAME }}/${{ vars.GITHUB_REPO}}:${{ github.sha}}
           
          
