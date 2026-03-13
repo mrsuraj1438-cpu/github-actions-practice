@@ -1,4 +1,15 @@
 # main.py
-from colorama import Fore
+#from colorama import Fore
 
-print(Fore.GREEN + "Hello, how are you")
+#print(Fore.GREEN + "Hello, how are you")
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
+
+@app.route('/health')
+def health():
+    return 'Server is up and running'
