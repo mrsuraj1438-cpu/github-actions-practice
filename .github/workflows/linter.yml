@@ -1,0 +1,21 @@
+name: practice linter 
+
+on: workflow_dispatch
+
+jobs:
+  linter_test:
+   runs-on: ubuntu-latest
+   steps:
+     - name: code check
+       uses: actions/checkout@v5
+
+     - name: set-up python
+       uses: actions/setup-python@v5
+       with:
+         python-version: "3.11"
+
+     - name: install dependencies
+       run: pip install -r requirements.txt
+
+     - name: run the linter
+       run: flake8 main.py
