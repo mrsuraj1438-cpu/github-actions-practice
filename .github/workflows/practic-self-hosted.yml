@@ -18,4 +18,4 @@ jobs:
         echo "the current user: $(whoami)"
         echo "Shows all users currently logged into the system: $(who)"
         echo "memory availabe: $(free -h)"
-        echo "advance command to show disk available: $(btop)"
+        echo "advance command to show disk available: $(htop)"
