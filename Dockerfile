@@ -17,7 +17,7 @@ COPY templates/ /app/templates/
 RUN pip install -r requirements.txt
 
 # EXPOSE THE CONTAINER PORT
-EXPOSE 80
+EXPOSE 5000
 # Entry point: define main command
 ENTRYPOINT ["python"]
 
