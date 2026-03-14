@@ -6,7 +6,10 @@ WORKDIR /app
 
 # Copy the index.html to set the working directory
 
-COPY index.html requirements.txt app.py  /app/
+COPY app.py requirements.txt /app/
+
+## Copy templates (like HTML files)
+COPY templates/ /app/templates/
 
 # Install the dependencies
 #hello
