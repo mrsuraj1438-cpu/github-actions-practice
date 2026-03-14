@@ -1,6 +1,10 @@
 name: Flask Deploy local Server
 
-on: workflow_dispatch
+on:
+    workflow_run:
+        workflows: ["Docker Build and Push CI"]
+        types:
+            - completed
 
 jobs:
     Flask_deploy:
