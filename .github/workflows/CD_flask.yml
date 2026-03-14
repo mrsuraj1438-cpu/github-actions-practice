@@ -15,4 +15,6 @@ jobs:
               uses: docker/setup-compose-action@v2
 
             - name: deploy with Docker compose
-              run: docker compose up -d --build
+              run: |
+                  docker compose down
+                  docker compose up -d --build
