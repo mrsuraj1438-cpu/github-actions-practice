@@ -1,0 +1,29 @@
+name: Docker Build and Push CI
+
+on:
+  push:
+    branches:
+      - main:
+
+jobs:
+  Build_CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Check Repo
+        uses: actions/checkout@v5
+
+      - name: Docker login to Docker Hub
+        uses: docker/login-actions@v3
+        with:
+          username: ${{vars.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_TOKEN}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker build and Push the image
+        uses: docker/build-push-actions@v6
+        with:
+        context: .
+        push: true
+        tags: ${{vars.DOCKER_USERNAME}}/flask-app:latest
