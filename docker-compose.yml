@@ -1,5 +1,5 @@
 services:
   web:
-    image: ${vars.DOCKER_USER}/flask-app:latest
+    image: ${DOCKER_USER}/flask-app:latest
     ports:
       - "9090:80"
