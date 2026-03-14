@@ -12,10 +12,8 @@ COPY index.html requirements.txt /app/
 
 RUN pip install -r requirements.txt
 
-# Entry point
+# Entry point: define main command
+ENTRYPOINT ["python"]
 
-ENTRYPOINT [ "python"]
-
-# cmd : you can run your file 
-
-CMD [ "app.py" ] # this is default file
+# Default python file to execute
+CMD ["app.py"]
