@@ -6,7 +6,7 @@ on:
             - main
 
 jobs:
-    Syntax_check:
+    Syntax_check_for_python:
         runs-on: ubuntu-latest
         steps:
             - name: code check of repo
@@ -20,7 +20,7 @@ jobs:
             - name: update the pip and Install the dependencies
               run: |
                   python -m pip install --upgrade pip 
-                  ptyhon -m pip install -r requirements.txt
+                  python -m pip install -r requirements.txt
 
             - name: check the syntax of python file
               run: flake8 app.py
