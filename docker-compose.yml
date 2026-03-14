@@ -2,4 +2,4 @@ services:
   web:
     image: ${DOCKER_USER}/flask-app:latest
     ports:
-      - "9090:80"
+      - "9090:5000"
