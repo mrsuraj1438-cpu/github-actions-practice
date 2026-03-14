@@ -7,6 +7,7 @@ jobs:
         runs-on: self-hosted
         env:
             DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
+            COMMIT_SHA: ${{github.sha}}
         steps:
             - name: code check
               uses: actions/checkout@v5
@@ -17,5 +18,4 @@ jobs:
             - name: deploy with Docker compose
               run: |
                   docker compose down
-
                   docker compose up -d --build
