@@ -1,0 +1,13 @@
+name: Flask Deploy EC2 Server
+
+on: workflow_dispatch
+
+jobs:
+    Flask_deploy:
+        runs-on: self-hosted
+        steps:
+            - name: code check
+              uses: actions/checkout@v5
+
+            - name: deploy with Docker compose
+              run: docker compose up -d --build

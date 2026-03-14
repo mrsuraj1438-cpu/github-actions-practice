@@ -6,12 +6,14 @@ WORKDIR /app
 
 # Copy the index.html to set the working directory
 
-COPY index.html requirements.txt /app/
+COPY index.html requirements.txt app.py  /app/
 
 # Install the dependencies
 
 RUN pip install -r requirements.txt
 
+# EXPOSE THE CONTAINER PORT
+EXPOSE 80
 # Entry point: define main command
 ENTRYPOINT ["python"]
 

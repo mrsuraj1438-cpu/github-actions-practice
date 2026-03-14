@@ -1,5 +1,7 @@
+version: "3.9"
+
 services:
   web:
-   image: ${DOCKER_USERNAME}/github-actions-app:v1
-   ports:
-    - "8080:80"
+    image: ${vars.DOCKER_USERNAME}/flask-app:${{ github.sha }}
+    ports:
+      - "9090:80"
