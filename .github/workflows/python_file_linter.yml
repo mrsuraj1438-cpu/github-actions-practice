@@ -1,0 +1,25 @@
+name: Python Code Check
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    Syntax_check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: code check of repo
+              uses: actions/checkout@v5
+
+            - name: setup-python version(3.11)
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
+                  update-pip: true
+
+            - name: Install the dependencies
+              run: pip install -r requirements.txt
+
+            - name: check the syntax of python file
+              run: flake8 app.py
