@@ -1,5 +1,6 @@
 services:
   web:
-    image: ${DOCKER_USER}/flask-app:${COMMIT_SHA}
+    # image: ${DOCKER_USER}/flask-app:${COMMIT_SHA}
+    image: ${DOCKER_USER}/flask-app:latest
     ports:
       - "9090:5000"
