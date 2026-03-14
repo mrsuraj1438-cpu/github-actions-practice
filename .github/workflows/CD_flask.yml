@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
     Flask_deploy:
-        runs-on: self-hosted
+        runs-on: [self-hosted, Linux, X64, Matrix]
         env:
             DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
         steps:
