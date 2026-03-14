@@ -1,10 +1,4 @@
-# main.py
-# from colorama import Fore
-
-# print(Fore.GREEN + "Hello, how are you")
-
 from flask import Flask, render_template
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,7 +7,7 @@ def hello_world():
 
 @app.route('/health')
 def health():
-    return "Server is up and running"
+    return 'Server is up and running'
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=True)

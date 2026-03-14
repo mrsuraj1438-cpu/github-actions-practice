@@ -1,4 +1,6 @@
 #colorama
 
 flake8
-flask
+
+flask==3.0.0
+

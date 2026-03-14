@@ -1,17 +1,21 @@
-FROM nginx:alpine
+# base image for the container 
+FROM python:alpine
 
-#set the working directory
-
+# set the working directory
 WORKDIR /app
 
-# Copy the index.html to working directory
+# Copy the index.html to set the working directory
 
-COPY index.html  /usr/share/nginx/html
+COPY index.html requirements.txt /app/
 
-# Expose the port
+# Install the dependencies
 
-EXPOSE 80
+RUN pip install -r requirements.txt
 
-#CMD USE
+# Entry point
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "python"]
+
+# cmd : you can run your file 
+
+CMD [ "app.py" ] # this is default file
