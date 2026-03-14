@@ -2,6 +2,6 @@ version: "3.9"
 
 services:
   web:
-    image: ${vars.DOCKER_USERNAME}/flask-app:${ github.sha }
+    image: ${vars.DOCKER_USER}/flask-app:${ github.sha }
     ports:
       - "9090:80"

@@ -6,7 +6,7 @@ jobs:
     Flask_deploy:
         runs-on: self-hosted
         env:
-            DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+            DOCKER_USER: ${{ vars.DOCKER_USERNAME }}
         steps:
             - name: code check
               uses: actions/checkout@v5
