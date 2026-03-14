@@ -1,4 +1,4 @@
-name: Flask Deploy EC2 Server
+name: Flask Deploy local Server
 
 on: workflow_dispatch
 
@@ -18,5 +18,5 @@ jobs:
             - name: deploy with Docker compose
               run: |
                   docker compose down
-
+                  docker pull 
                   docker compose up -d --build --force-recreate
