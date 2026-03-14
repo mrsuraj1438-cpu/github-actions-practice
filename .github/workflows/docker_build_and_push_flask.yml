@@ -1,9 +1,10 @@
 name: Docker Build and Push CI
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   Build_CI:
